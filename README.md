@@ -1,3 +1,5 @@
+> **Repository context:** This is a fork of an ASP.NET Core / Azure Pipelines documentation sample, not an original AI project. The original upstream contribution and legal notices below are retained. For original AI engineering portfolio work by this account, see [ConsensusTree-AI](https://github.com/minhajul-abedin-ai/ConsensusTree-AI), the [RAG evaluation platform](https://github.com/minhajul-abedin-ai/Production-Rag-Evaluation-Platform) and the [GitHub profile](https://github.com/minhajul-abedin-ai).
+
 # Sample ASP.NET Core application for Azure Pipelines docs
 
 For information on how to set up a pipeline for this repository, see [Create your first pipeline](https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=azure-devops).
