@@ -1,34 +1,25 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
+# Build the actual SDK-style web project (this repository has no .sln).
 trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
-
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: UseDotNet@2
+  displayName: Install .NET 10 SDK
   inputs:
-    restoreSolution: '$(solution)'
+    packageType: sdk
+    version: '10.0.x'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- script: dotnet restore pipelines-dotnet-core.csproj
+  displayName: Restore dependencies
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- script: dotnet build pipelines-dotnet-core.csproj --configuration Release --no-restore --warnaserror
+  displayName: Compile application
+
+- script: dotnet publish pipelines-dotnet-core.csproj --configuration Release --no-build --output $(Build.ArtifactStagingDirectory)/site
+  displayName: Publish application
+
+- publish: $(Build.ArtifactStagingDirectory)/site
+  artifact: website
